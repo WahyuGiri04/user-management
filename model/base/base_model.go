@@ -1,14 +1,18 @@
 package baseModel
 
-import "time"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type BaseModel struct {
 	ID        int       `json:"-" gorm:"primaryKey"`
-	UUID      string    `json:"uuid" gorm:"type:varchar(255)"`
-	CreatedAt time.Time `json:"created_at" gorm:"autoCreateTime"`
-	CreatedBy string    `json:"created_by" gorm:"type:varchar(255)"`
-	UpdatedAt time.Time `json:"updated_at" gorm:"autoUpdateTime"`
-	UpdatedBy string    `json:"updated_by" gorm:"type:varchar(255)"`
+	UUID uuid.UUID `json:"uuid" gorm:"type:uuid;default:gen_random_uuid()"`
+	CreatedAt time.Time `json:"-" gorm:"autoCreateTime"`
+	CreatedBy int    `json:"-" gorm:"default:1"`  
+	UpdatedAt time.Time `json:"-" gorm:"autoUpdateTime"`
+	UpdatedBy int    `json:"-" gorm:"default:1"`
 	IsActive  bool      `json:"is_active" gorm:"default:true"`
 	IsDeleted bool      `json:"is_deleted" gorm:"default:false"`
 }

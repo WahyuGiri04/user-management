@@ -26,7 +26,7 @@ func NewDireksiController() DireksiControllerInterface {
 	direksiService := service.NewDireksiService(direksiRepo)
 	
 	return &DireksiController{
-		BaseController: baseController.NewBaseController[model.Direksi](direksiService),
+		BaseController: baseController.NewBaseController(direksiService),
 		service:        direksiService,
 	}
 }
