@@ -6,13 +6,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRoutes(route *gin.Engine) {
+func SetupRoutes(route *gin.Engine, path string) {
 
 	// Initialize controller (dependency injection happens inside)
 	direksiController := controller.NewDireksiController()
 
 	// Group routes for Direksi
-	direksiGroup := route.Group("/api/v1/direksi")
+	direksiGroup := route.Group(path + "/direksi")
 	{
 		// Base CRUD operations
 		direksiGroup.POST("/", direksiController.Create)

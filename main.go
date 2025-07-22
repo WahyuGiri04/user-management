@@ -26,7 +26,8 @@ func main() {
 	config.Connect()
 
 	// Setup routes
-	routes.SetupRoutes(r)
+	path := os.Getenv("SERVER_PATH")
+	routes.SetupRoutes(r, path)
 
 	// Menentukan port service
 	port := os.Getenv("SERVICE_PORT")
