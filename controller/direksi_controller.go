@@ -1,10 +1,10 @@
 package controller
 
 import (
-	"net/http"
 	"user-management/model"
 	"user-management/service"
 	"user-management/repository"
+	"user-management/util"
 	baseController "user-management/controller/base"
 
 	"github.com/gin-gonic/gin"
@@ -35,15 +35,15 @@ func NewDireksiController() DireksiControllerInterface {
 func (ctrl *DireksiController) GetByCode(c *gin.Context) {
 	code := c.Query("code")
 	if code == "" {
-		ctrl.ErrorResponse(c, http.StatusBadRequest, "Code query parameter is required")
+		util.ErrorBadRequest(c, "Code query parameter is required")
 		return
 	}
 
 	direksi, err := ctrl.service.GetByCode(code)
 	if err != nil {
-		ctrl.ErrorResponse(c, http.StatusNotFound, "Direksi not found: "+err.Error())
+		util.ErrorNotFound(c, "Direksi not found: "+err.Error())
 		return
 	}
 
-	ctrl.SuccessResponse(c, "Direksi retrieved by code successfully", direksi)
+	util.SuccessOK(c, "Direksi retrieved by code successfully", direksi)
 }
