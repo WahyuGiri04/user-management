@@ -36,7 +36,7 @@ func (ctrl *BaseController[T]) Create(c *gin.Context) {
 	}
 
 	if err := ctrl.Service.Create(&entity); err != nil {
-		util.ErrorInternalServer(c, "Failed to create entity: "+err.Error())
+		util.ErrorInternalServer(c, "Failed to create : "+err.Error())
 		return
 	}
 
