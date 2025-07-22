@@ -1,0 +1,20 @@
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] POST   /api/v1/user-service/direksi/ --> user-management/controller.DireksiControllerInterface.Create-fm (3 handlers)
+[GIN-debug] GET    /api/v1/user-service/direksi/ --> user-management/controller.DireksiControllerInterface.GetAll-fm (3 handlers)
+[GIN-debug] GET    /api/v1/user-service/direksi/pagination --> user-management/controller.DireksiControllerInterface.GetPagination-fm (3 handlers)
+[GIN-debug] GET    /api/v1/user-service/direksi/:uuid --> user-management/controller.DireksiControllerInterface.GetByUUID-fm (3 handlers)
+[GIN-debug] PUT    /api/v1/user-service/direksi/:uuid --> user-management/controller.DireksiControllerInterface.Update-fm (3 handlers)
+[GIN-debug] DELETE /api/v1/user-service/direksi/:uuid --> user-management/controller.DireksiControllerInterface.Delete-fm (3 handlers)
+[GIN-debug] DELETE /api/v1/user-service/direksi/:uuid/soft --> user-management/controller.DireksiControllerInterface.SoftDelete-fm (3 handlers)
+[GIN-debug] GET    /api/v1/user-service/direksi/search --> user-management/controller.DireksiControllerInterface.GetByField-fm (3 handlers)
+[GIN-debug] GET    /api/v1/user-service/direksi/search/name --> user-management/controller.DireksiControllerInterface.FindByName-fm (3 handlers)
+[GIN-debug] GET    /api/v1/user-service/direksi/search/code --> user-management/controller.DireksiControllerInterface.GetByCode-fm (3 handlers)
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :4001
+[GIN] 2025/07/22 - 16:15:04 | 200 |    9.560654ms |             ::1 | GET      "/api/v1/user-service/direksi/pagination?page_size=5&page=1"
