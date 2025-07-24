@@ -34,4 +34,14 @@ func SetupRoutes(route *gin.Engine, path string) {
 		// Custom operations specific to Direksi
 		direksiGroup.GET("/search/code", direksiController.GetByCode)
 	}
+
+	roleController := controller.NewRoleController()
+	roleGroup := route.Group(path + "/role")
+	{
+		roleGroup.POST("/", roleController.Create)
+		roleGroup.GET("/", roleController.GetAll)
+		roleGroup.GET("/pagination", roleController.GetPagination)
+		roleGroup.GET("/:uuid", roleController.GetByUUID)
+		roleGroup.PUT("/:uuid", roleController.Update)
+	}
 }

@@ -14,8 +14,6 @@ CREATE TABLE IF NOT EXISTS "user_management".direksi (
     is_deleted BOOLEAN DEFAULT FALSE
 );
 
-COMMIT;
-
 CREATE TABLE IF NOT EXISTS "user_management".role (
     id SERIAL PRIMARY KEY,
     uuid UUID DEFAULT gen_random_uuid(),
@@ -33,8 +31,7 @@ CREATE TABLE IF NOT EXISTS "user_management".role (
 truncate table "user_management".direksi RESTART IDENTITY;
 
 select * from "user_management".direksi;
-
-COMMIT;
+SELECT * from "user_management".role;
 
 DROP TABLE IF EXISTS "user_management".direksi;
 DROP TABLE IF EXISTS "user_management".role;
