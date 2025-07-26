@@ -27,6 +27,10 @@ type BaseRepository[T any] struct {
 	DB *gorm.DB
 }
 
+type Preloadable interface {
+	PreloadFields(*gorm.DB) *gorm.DB
+}
+
 func NewBaseRepository[T any]() *BaseRepository[T] {
 	return &BaseRepository[T]{DB: config.DB}
 }
@@ -39,17 +43,19 @@ func (r *BaseRepository[T]) Create(entity *T) error {
 	return r.DB.Create(entity).Error
 }
 
-// GetAll - only returns active (not soft deleted) entities
 func (r *BaseRepository[T]) GetAll(entities *[]T) error {
-	return r.DB.Where("is_deleted = ? AND is_active = ?", false, true).Find(entities).Error
+	var entity T
+	db := r.DB.Where("is_deleted = ? AND is_active = ?", false, true)
+	if preloadable, ok := any(entity).(Preloadable); ok {
+		db = preloadable.PreloadFields(db)
+	}
+	return db.Find(entities).Error
 }
 
-// GetAllIncludingDeleted - returns all entities including soft deleted ones
 func (r *BaseRepository[T]) GetAllIncludingDeleted(entities *[]T) error {
 	return r.DB.Unscoped().Find(entities).Error
 }
 
-// GetByUUID - only returns active (not soft deleted) entity
 func (r *BaseRepository[T]) GetByUUID(entity *T, uuid string) error {
 	return r.DB.Where("uuid = ? AND is_deleted = ? AND is_active = ?", uuid, false, true).First(entity).Error
 }
@@ -58,12 +64,10 @@ func (r *BaseRepository[T]) Update(entity *T, uuid string) error {
 	return r.DB.Model(entity).Where("uuid = ? AND is_deleted = ?", uuid, false).Updates(entity).Error
 }
 
-// Delete - hard delete (permanent removal)
 func (r *BaseRepository[T]) Delete(uuid string) error {
 	return r.DB.Where("uuid = ?", uuid).Delete(new(T)).Error
 }
 
-// SoftDelete - marks entity as deleted by setting is_deleted = true and is_active = false
 func (r *BaseRepository[T]) SoftDelete(uuid string) error {
 	return r.DB.Model(new(T)).Where("uuid = ?", uuid).Updates(map[string]interface{}{
 		"is_deleted": true,
@@ -71,7 +75,6 @@ func (r *BaseRepository[T]) SoftDelete(uuid string) error {
 	}).Error
 }
 
-// GetPagination - only returns active (not soft deleted) entities with pagination
 func (r *BaseRepository[T]) GetPagination(page, pageSize int, entities *[]T) (baseModel.Pagination, error) {
 	var totalRows int64
 	r.DB.Model(new(T)).Where("is_deleted = ? AND is_active = ?", false, true).Count(&totalRows)
@@ -93,7 +96,6 @@ func (r *BaseRepository[T]) GetPagination(page, pageSize int, entities *[]T) (ba
 	}, nil
 }
 
-// GetByField - only returns active (not soft deleted) entities
 func (r *BaseRepository[T]) GetByField(field, value string) ([]T, error) {
 	var entities []T
 	err := r.DB.Where(field+" LIKE ? AND is_deleted = ? AND is_active = ?", "%"+value+"%", false, true).
@@ -101,7 +103,6 @@ func (r *BaseRepository[T]) GetByField(field, value string) ([]T, error) {
 	return entities, err
 }
 
-// FindByName - only returns active (not soft deleted) entities
 func (r *BaseRepository[T]) FindByName(name string) ([]T, error) {
 	var entities []T
 	err := r.DB.Where("nama LIKE ? AND is_deleted = ? AND is_active = ?", "%"+name+"%", false, true).
